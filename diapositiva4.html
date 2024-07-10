@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diapositiva 3</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .slide {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            text-align: left;
+        }
+        h1 {
+            font-size: 40px;
+            color: #1f497d;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 28px;
+            color: #333;
+            text-align: justify;
+        }
+        .next-slide, .prev-slide, .home-button {
+            position: fixed;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #1f497d;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+            z-index: 1; /* Asegura que estén sobre otros elementos */
+        }
+        .next-slide {
+            right: 20px; /* Posiciona a la derecha */
+        }
+        .prev-slide {
+            left: 80px; /* Posiciona más a la izquierda */
+        }
+        .home-button {
+            right: 80px; /* Posiciona más a la derecha */
+        }
+        .next-slide:hover, .prev-slide:hover, .home-button:hover {
+            background-color: #154b7b;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h1>Las nuevas acciones o participaciones</h1>
+        <p>Las nuevas acciones o participaciones que se emitan como consecuencia de la escisión pertenecen a los socios o accionistas de la sociedad escindida, quienes las reciben en la misma proporción en que participan en el capital de ésta, salvo pacto en contrario. El pacto en contrario puede disponer que uno o más socios no reciban acciones o participaciones de alguna o algunas de las sociedades beneficiarias.</p>
+    </div>
+
+    <!-- Flecha para la diapositiva anterior -->
+    <div class="prev-slide" onclick="navigateToPrevSlide()">⬅</div>
+
+    <!-- Flecha para la siguiente diapositiva -->
+    <div class="next-slide" onclick="navigateToNextSlide()">➔</div>
+
+    <!-- Botón para regresar a la página principal -->
+    <a href="index.html" class="home-button">🏠</a>
+
+    <!-- Script para la navegación con teclado -->
+    <script>
+        function navigateToNextSlide() {
+            window.location.href = 'diapositiva5.html';
+        }
+
+        function navigateToPrevSlide() {
+            window.location.href = 'diapositiva3.html';
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                navigateToNextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                navigateToPrevSlide();
+            }
+        });
+    </script>
+</body>
+</html>

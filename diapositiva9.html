@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razones para Realizar una Escisión - Diapositiva 9</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #1f497d;
+        }
+        .objective-box {
+            background-color: #1f497d;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: justify;
+        }
+        .objective-box p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .next-slide, .prev-slide, .home-button {
+            position: fixed;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #1f497d;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+            z-index: 1; /* Asegura que estén sobre otros elementos */
+        }
+        .next-slide {
+            right: 20px; /* Posiciona a la derecha */
+        }
+        .prev-slide {
+            left: 80px; /* Posiciona más a la izquierda */
+        }
+        .home-button {
+            right: 80px; /* Posiciona más a la derecha */
+        }
+        .next-slide:hover, .prev-slide:hover, .home-button:hover {
+            background-color: #154b7b;
+        }
+    </style>
+</head>
+<body>
+    <h1>RAZONES PARA REALIZAR UNA ESCISIÓN</h1>
+
+    <div class="objective-box">
+        <p>(i) Mejor organización y manejo más eficiente de cada línea de negocio, para efectos de competir en una mejor posición en el mercado, ya que ello permitirá tener una gestión independiente y especializada.</p>
+    </div>
+
+    <div class="objective-box">
+        <p>(ii) Optimización de la estructura de capital de cada sociedad participante, ya que se podrá acceder a propuestas de financiamiento de forma independiente, negociando condiciones financieras acorde a la clase de activos específicos a cada línea de negocio.</p>
+    </div>
+
+    <div class="objective-box">
+        <p>(iii) Permitirá la participación eventual de nuevos inversionistas que tengan un especial interés en la clase de activos correspondiente a las líneas de negocio de las sociedades participantes.</p>
+    </div>
+
+    <div class="objective-box">
+        <p>(iv) Crecimiento estructurado de las sociedades participantes, a través de un manejo controlado de apalancamiento y capital, diseñado de forma específica para cada una de estas.</p>
+    </div>
+
+    <div class="objective-box">
+        <p>(v) Desarrollo de estrategias específicas para el manejo de los riesgos propios de la naturaleza de las líneas de negocio de cada una de las sociedades participantes, permitiendo una adecuada ponderación y exposición al riesgo que les corresponda.</p>
+    </div>
+
+    <!-- Flecha para la diapositiva anterior -->
+    <div class="prev-slide" onclick="navigateToPrevSlide()">⬅</div>
+
+    <!-- Flecha para la siguiente diapositiva -->
+    <div class="next-slide" onclick="navigateToNextSlide()">➔</div>
+
+    <!-- Botón para regresar a la página principal -->
+    <a href="index.html" class="home-button">🏠</a>
+
+    <!-- Script para la navegación con teclado -->
+    <script>
+        function navigateToNextSlide() {
+            window.location.href = 'diapositiva10.html';
+        }
+
+        function navigateToPrevSlide() {
+            window.location.href = 'diapositiva8.html';
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                navigateToNextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                navigateToPrevSlide();
+            }
+        });
+    </script>
+</body>
+</html>

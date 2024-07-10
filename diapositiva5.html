@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diapositiva 4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+        .slide {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: auto;
+            text-align: left;
+        }
+        h1 {
+            font-size: 40px;
+            color: #1f497d;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 32px;
+            color: #1f497d;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 28px;
+            color: #333;
+            text-align: justify;
+        }
+        .next-slide, .prev-slide, .home-button {
+            position: fixed;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #1f497d;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+            z-index: 1; /* Asegura que estén sobre otros elementos */
+        }
+        .next-slide {
+            right: 20px; /* Posiciona a la derecha */
+        }
+        .prev-slide {
+            left: 80px; /* Posiciona más a la izquierda */
+        }
+        .home-button {
+            right: 80px; /* Posiciona más a la derecha */
+        }
+        .next-slide:hover, .prev-slide:hover, .home-button:hover {
+            background-color: #154b7b;
+        }
+        .button-container {
+            margin-top: 20px; /* Espacio entre el texto y los botones */
+        }
+        .expand-text {
+            display: none; /* Inicialmente oculto */
+            font-size: 24px;
+            margin-top: 20px; /* Espacio entre el texto y los botones */
+        }
+        .expand-text.show {
+            display: block; /* Mostrar cuando se activa */
+        }
+        button {
+            background-color: #1f497d;
+            color: white;
+            font-size: 32px;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #154b7b;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h1>Artículo 369.- Definición de bloques patrimoniales</h1>
+        <h2>Para los efectos de este Título, se entiende por bloque patrimonial:</h2>
+        <p>
+            Para los efectos de este Título, se entiende por bloque patrimonial:
+        </p>
+        <div class="button-container">
+            <button onclick="toggleText(1)">1. Un activo o un conjunto de activos de la sociedad escindida</button>
+            <div id="expandedText1" class="expand-text">
+                <p>a) Un activo de la sociedad escindida, prescindiendo de su pasivo.</p>
+                <p>b) Un conjunto de activos de la sociedad escindida, prescindiendo también de sus pasivos;</p>
+            </div>
+            <button onclick="toggleText(2)">2. El conjunto de uno o más activos y uno o más pasivos de la sociedad escindida</button>
+            <div id="expandedText2" class="expand-text">
+                <p>a) Un activo y un pasivo de la sociedad escindida.</p>
+                <p>b) Un conjunto de activos y un pasivo de la sociedad escindida.</p>
+                <p>c) Un activo y un conjunto de pasivos de la sociedad escindida.</p>
+                <p>d) Un conjunto de activos y un conjunto de pasivos de la sociedad escindida.</p>
+            </div>
+            <button onclick="toggleText(3)">3. Un fondo empresarial</button>
+            <div id="expandedText3" class="expand-text">
+                <p>Como el conjunto de bienes y derechos organizados por personas naturales o jurídicas para el desarrollo de una actividad empresarial, siendo susceptible de valoración económica.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flecha para la diapositiva anterior -->
+    <div class="prev-slide" onclick="navigateToPrevSlide()">⬅</div>
+
+    <!-- Flecha para la siguiente diapositiva -->
+    <div class="next-slide" onclick="navigateToNextSlide()">➔</div>
+
+    <!-- Botón para regresar a la página principal -->
+    <a href="index.html" class="home-button">🏠</a>
+
+    <!-- Script para la navegación con teclado y mostrar/ocultar texto -->
+    <script>
+        function navigateToNextSlide() {
+            window.location.href = 'diapositiva6.html';
+        }
+
+        function navigateToPrevSlide() {
+            window.location.href = 'diapositiva4.html';
+        }
+
+        function toggleText(buttonId) {
+            var expandedText = document.getElementById('expandedText' + buttonId);
+            expandedText.classList.toggle('show'); // Mostrar/ocultar el texto expandido
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                navigateToNextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                navigateToPrevSlide();
+            }
+        });
+    </script>
+</body>
+</html>

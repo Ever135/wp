@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .slide {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+            text-align: left;
+        }
+        h1 {
+            font-size: 40px;
+            color: #1f497d;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 28px;
+            color: #333;
+            text-align: justify;
+        }
+        .rectangle {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .half {
+            width: 48%;
+            height: 100px; /* Ajusta la altura según necesites */
+            background-color: #1f497d;
+            color: white;
+            text-align: center;
+            line-height: 100px; /* Centra verticalmente el texto */
+            font-size: 24px;
+            border-radius: 10px;
+        }
+        .separator {
+            width: 4%; /* Ancho del separador */
+            height: 100px; /* Ajusta la altura para que coincida con la altura de los rectángulos */
+            background-color: #333; /* Color del separador */
+        }
+        .next-slide, .home-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #1f497d;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+        }
+        .next-slide:hover, .home-button:hover {
+            background-color: #154b7b;
+        }
+        .home-button {
+            bottom: 80px; /* Ajusta la posición del botón de inicio */
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h1>Concepto de Escisión</h1>
+        <p>Por la escisión una sociedad fracciona su patrimonio en dos o más bloques para transferirlos íntegramente a otras sociedades o para conservar uno de ellos, cumpliendo los requisitos y las formalidades prescritas por esta ley.</p>
+
+        <!-- Rectángulo fragmentado con separador -->
+        <div class="rectangle">
+            <div class="half">Patrimonio</div>
+            <div class="separator"></div>
+            <div class="half">Patrimonio</div>
+        </div>
+    </div>
+
+    <!-- Flecha para la siguiente diapositiva -->
+    <div class="next-slide" onclick="navigateToNextSlide()">➔</div>
+
+    <!-- Botón para regresar a la página principal -->
+    <a href="index.html" class="home-button">🏠</a>
+
+    <!-- Script para la navegación con teclado -->
+    <script>
+        function navigateToNextSlide() {
+            window.location.href = 'diapositiva2.html';
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                navigateToNextSlide();
+            }
+        });
+    </script>
+</body>
+</html>

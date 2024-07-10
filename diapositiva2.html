@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diapositiva 2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .slide {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+            text-align: left;
+        }
+        h1 {
+            font-size: 40px;
+            color: #1f497d;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 28px;
+            color: #333;
+            text-align: justify;
+        }
+        .next-slide, .prev-slide, .home-button {
+            position: fixed;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #1f497d;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s;
+            z-index: 1; /* Asegura que estén sobre otros elementos */
+        }
+        .next-slide {
+            right: 20px; /* Posiciona a la derecha */
+        }
+        .prev-slide {
+            left: 80px; /* Posiciona más a la izquierda */
+        }
+        .home-button {
+            right: 80px; /* Posiciona más a la derecha */
+        }
+        .next-slide:hover, .prev-slide:hover, .home-button:hover {
+            background-color: #154b7b;
+        }
+        .circle-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Alineación a la izquierda */
+            margin-bottom: 40px; /* Aumenta el espacio inferior */
+        }
+        .circle {
+            width: 100px;
+            height: 100px;
+            background-color: #1f497d;
+            color: white;
+            text-align: center;
+            line-height: 100px;
+            font-size: 36px;
+            border-radius: 50%;
+            margin-right: 20px;
+            display: flex;
+            flex-direction: column; /* Alinea elementos en columna */
+            align-items: center; /* Centra horizontalmente */
+        }
+        .equal-sign {
+            font-size: 36px;
+            margin: 20px 0; /* Aumenta el margen vertical */
+        }
+          .input-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .small-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            border-radius: 50%;
+            font-size: 18px;
+        }
+        .circle-red {
+            background-color: #e74c3c;
+        }
+        .circle-green {
+            background-color: #2ecc71;
+        }
+        .circle-blue {
+            background-color: #3498db;
+        }
+        .circle-yellow {
+            background-color: #f1c40f;
+        }
+        .circle-purple {
+            background-color: #9b59b6;
+        }
+        .important-box {
+            background-color: #e74c3c;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 40px;
+            font-size: 24px;
+            text-align: center; /* Alinea el texto al centro */
+            display: none; /* Inicialmente oculto */
+        }
+        .show-important {
+            margin-top: 20px; /* Espacio entre el botón y el cuadro rojo */
+            text-align: center;
+        }
+        .show-important button {
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #1f497d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .show-important button:hover {
+            background-color: #154b7b;
+        }
+        .highlight {
+            background-color: yellow; /* Resaltado de texto */
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <h1>Puede adoptar alguna de las siguientes formas</h1>
+        <p>1. <span class="highlight">La división de la totalidad del patrimonio</span> de una sociedad en dos o más <span class="highlight">bloques patrimoniales</span> , que son transferidos a nuevas sociedades o absorbidos por sociedades ya existentes o ambas cosas a la vez.</p>
+
+        <!-- Contenedor para los círculos y el símbolo de igual -->
+        <div class="circle-container">
+            <!-- Círculo con la letra "A" -->
+            <div class="circle">
+                A
+                <!-- Contenedor para el input y el botón -->
+                <div class="input-container">
+                    <input type="number" id="numCircles" min="1" max="10" value="5">
+                    <button onclick="generateCircles()">Generar</button>
+                </div>
+            </div>
+            <!-- Símbolo de igual -->
+            <span class="equal-sign">=</span>
+            <!-- Contenedor para los círculos pequeños generados -->
+            <div id="circlesContainer"></div>
+        </div>
+
+        <!-- Botón para mostrar el cuadro rojo importante -->
+        <div class="show-important">
+            <button onclick="showImportantBox()">Mostrar Importante</button>
+        </div>
+
+        <!-- Cuadro rojo importante -->
+        <div class="important-box" id="importantBox">
+            <strong>IMPORTANTE:</strong> Esta forma de escisión produce la extinción de la sociedad escindida, pero no desaparece la responsabilidad tributaria.
+        </div>
+    </div>
+
+    <!-- Flecha para la diapositiva anterior -->
+    <div class="prev-slide" onclick="navigateToPrevSlide()">⬅</div>
+
+    <!-- Flecha para la siguiente diapositiva -->
+    <div class="next-slide" onclick="navigateToNextSlide()">➔</div>
+
+    <!-- Botón para regresar a la página principal -->
+    <a href="index.html" class="home-button">🏠</a>
+
+    <!-- Script para la navegación con teclado y generación de círculos -->
+    <script>
+        function navigateToNextSlide() {
+            window.location.href = 'diapositiva3.html';
+        }
+
+        function navigateToPrevSlide() {
+            window.location.href = 'diapositiva1.html';
+        }
+
+        function generateCircles() {
+            var numCircles = document.getElementById('numCircles').value;
+            var circlesContainer = document.getElementById('circlesContainer');
+            circlesContainer.innerHTML = '';
+
+            var colors = ['#e74c3c', '#2ecc71', '#3498db', '#f1c40f', '#9b59b6'];
+            var consonants = ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'];
+
+            for (var i = 0; i < numCircles; i++) {
+                var randomColor = colors[Math.floor(Math.random() * colors.length)];
+                var randomConsonant = consonants[Math.floor(Math.random() * consonants.length)];
+                var randomSize = Math.floor(Math.random() * 20) + 20; // Genera tamaños entre 20 y 40px
+
+                var circle = document.createElement('div');
+                circle.className = 'small-circle';
+                circle.style.backgroundColor = randomColor;
+                circle.innerText = randomConsonant;
+                circle.style.width = randomSize + 'px';
+                circle.style.height = randomSize + 'px';
+
+                circlesContainer.appendChild(circle);
+            }
+        }
+
+        function showImportantBox() {
+            var importantBox = document.getElementById('importantBox');
+            importantBox.style.display = 'block'; // Muestra el cuadro rojo importante
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                navigateToNextSlide();
+            } else if (event.key === 'ArrowLeft') {
+                navigateToPrevSlide();
+            }
+        });
+    </script>
+</body>
+</html>
