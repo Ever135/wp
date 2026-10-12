@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La Matemática y su relación con la Física</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Concepto: informe científico en modo oscuro (azul marino). Naranja para ecuaciones y curvas, cian para valores calculados. Tres temas, tres ejemplos vivos, tres preguntas de cierre. */
+:root{
+  --bg:#0b1630; --surface:#132247; --surface-2:#182a56; --line:#2a3f73;
+  --fg:#eaf0ff; --muted:#a3b3d9;
+  --accent:#f5a623; --accent-fill:#f5a623; --on-accent:#1a1204;
+  --cyan:#38bdf8; --ok:#4ade80; --bad:#fb7185;
+  --f-display:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-body:'Hanken Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f3f6fc; --surface:#ffffff; --surface-2:#e8eef9; --line:#c9d5ec;
+    --fg:#0f1b3a; --muted:#4b5b82;
+    --accent:#b45309; --accent-fill:#f5a623; --on-accent:#1f1400;
+    --cyan:#0369a1; --ok:#15803d; --bad:#be123c;
+    color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#f3f6fc; --surface:#ffffff; --surface-2:#e8eef9; --line:#c9d5ec;
+  --fg:#0f1b3a; --muted:#4b5b82;
+  --accent:#b45309; --accent-fill:#f5a623; --on-accent:#1f1400;
+  --cyan:#0369a1; --ok:#15803d; --bad:#be123c;
+  color-scheme:light;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:1rem;line-height:1.55;padding-inline:clamp(16px,4vw,32px);padding-block:0 3rem}
+.wrap{max-width:1040px;margin-inline:auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+b,strong{font-weight:700}
+
+/* Navegación */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);display:flex;align-items:center;gap:.25rem;flex-wrap:wrap;padding-block:.6rem;border-bottom:1px solid var(--line)}
+.nav .brand{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-right:auto;padding-right:1rem}
+.nav button.navlink{background:none;border:0;padding:.35rem .6rem;border-radius:6px;color:var(--muted);cursor:pointer;font-size:.9rem}
+.nav button.navlink:hover{color:var(--fg);background:var(--surface)}
+.nav .themebtn{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.3rem .8rem;font-size:.8rem;cursor:pointer;color:var(--fg)}
+.nav .bar{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--accent-fill);transform-origin:left;transform:scaleX(0)}
+
+/* Portada */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:2rem;align-items:center;padding-block:2.5rem 2rem;border-bottom:2px solid var(--accent-fill)}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 1rem}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(2.3rem,7vw,4.2rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 1rem;text-wrap:balance}
+.lede{font-size:1.15rem;color:var(--muted);max-width:34em;margin:0 0 1.25rem}
+.meta{font-size:.9rem;color:var(--muted);margin:0}
+.edit{border-bottom:1px dashed var(--muted);padding-inline:2px;color:var(--fg);outline-offset:3px}
+.edit:hover{background:var(--surface)}
+.hero-fig{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:.75rem}
+
+/* Objetivos y ruta */
+.goals{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:1.5rem;margin-top:1.75rem;align-items:start}
+.goals h3{font-size:1rem;color:var(--cyan);margin-bottom:.5rem}
+.goals ul{margin:0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.35rem}
+.route{display:flex;flex-direction:column;gap:.4rem}
+.route button{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.2rem .75rem;align-items:baseline;text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;cursor:pointer}
+.route button:hover{border-color:var(--muted)}
+.route .n{font-family:var(--f-mono);font-size:.75rem;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+.route .t{font-weight:600}
+
+/* Secciones */
+.sec{padding-top:3rem;scroll-margin-top:60px}
+h2{font-family:var(--f-display);font-weight:700;font-size:clamp(1.5rem,3.6vw,2rem);line-height:1.15;color:var(--accent);margin:0 0 1.25rem;text-wrap:balance}
+h3{font-family:var(--f-display);font-weight:700;font-size:1.2rem;line-height:1.25;margin:0;text-wrap:balance}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.25rem}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1rem}
+.concept h3{color:var(--cyan);font-size:1.1rem;margin-bottom:.4rem}
+.concept p{margin:0 0 .9rem}
+.concept .eq{font-family:var(--f-mono);font-size:.85rem;color:var(--accent);background:var(--surface-2);border-radius:8px;padding:.35rem .6rem;display:inline-block;max-width:100%;overflow-wrap:anywhere}
+.concept .where{display:block;margin-top:.6rem;font-size:.8rem;color:var(--muted)}
+
+/* Temas */
+.topics{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.trow{display:grid;grid-template-columns:minmax(120px,190px) minmax(0,1fr) auto;gap:1rem;align-items:center;padding:.9rem 1.1rem}
+.trow+.trow{border-top:1px solid var(--line)}
+.t-name{font-weight:700;color:var(--cyan)}
+.t-go{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:.25rem .8rem;font-size:.8rem;cursor:pointer;white-space:nowrap}
+.t-go:hover{border-color:var(--muted)}
+.topics-note{margin:.9rem 0 0;font-size:.85rem;color:var(--muted)}
+
+/* Controles */
+.controls{display:flex;flex-direction:column;gap:.9rem}
+.ctl{display:flex;flex-direction:column;gap:.2rem}
+.ctl .lbl{display:flex;justify-content:space-between;gap:.5rem;font-size:.9rem;color:var(--muted)}
+.ctl output{font-family:var(--f-mono);color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent-fill);margin:0}
+.btn{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:.45rem .9rem;cursor:pointer;font-size:.9rem;color:var(--fg)}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--on-accent);font-weight:700}
+.btn[disabled]{opacity:.5;cursor:default}
+.chips,.seg,.btnrow{display:flex;flex-wrap:wrap;gap:.4rem}
+.chips .btn{padding:.2rem .6rem;font-size:.8rem}
+.seg .btn[aria-pressed="true"]{background:var(--accent-fill);border-color:var(--accent-fill);color:var(--on-accent);font-weight:700}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* Ejemplos */
+.ex{margin-top:1.25rem;scroll-margin-top:60px}
+.ex:first-of-type{margin-top:0}
+.ex-h{display:flex;flex-direction:column;gap:.25rem;margin-bottom:.9rem}
+.tag{font-size:.8rem;color:var(--accent);margin:0}
+.ex p{margin:0 0 .75rem}
+.ex-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:1.5rem;align-items:start;margin-top:1rem}
+.sol{display:flex;flex-direction:column;gap:.5rem;margin-top:1.1rem;padding-top:1rem;border-top:1px solid var(--line)}
+.sol p{margin:0;font-size:.95rem;overflow-wrap:anywhere}
+.hl{color:var(--cyan);font-weight:700;font-family:var(--f-mono);white-space:nowrap}
+.ok{color:var(--ok);font-weight:700}
+.tip{margin:.25rem 0 0;padding:.6rem .8rem;border-left:3px solid var(--accent-fill);background:var(--surface-2);border-radius:0 8px 8px 0;font-size:.9rem;overflow-wrap:anywhere}
+.fig{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:.5rem}
+.fig svg{display:block;width:100%;height:auto}
+.playrow{display:flex;align-items:center;gap:.75rem;margin-top:.75rem;flex-wrap:wrap}
+.playrow .ctl{flex:1 1 180px}
+.now{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);margin:.6rem 0 0;overflow-wrap:anywhere}
+.now b{color:var(--fg)}
+
+/* SVG */
+.sv text{font-family:var(--f-mono);font-size:12px;fill:var(--muted)}
+.sv text.cy{fill:var(--cyan);font-weight:600}
+.sv text.ac{fill:var(--accent);font-weight:600}
+.sv .ax{stroke:var(--muted);stroke-width:1.2;fill:none}
+.sv .grid{stroke:var(--line);stroke-width:1;fill:none}
+.sv .dash{stroke:var(--muted);stroke-width:1;stroke-dasharray:4 4;opacity:.8;fill:none}
+.sv .curve{stroke:var(--accent);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.sv .vec-a{stroke:var(--accent);stroke-width:3.5;fill:none}
+.sv .vec-c{stroke:var(--cyan);stroke-width:3;fill:none}
+.sv .pt{fill:var(--cyan);stroke:var(--surface-2);stroke-width:2}
+.sv .pt-a{fill:var(--accent);stroke:var(--surface-2);stroke-width:2}
+.sv .mk-a{fill:var(--accent)}
+.sv .mk-c{fill:var(--cyan)}
+.sv .arc{stroke:var(--muted);stroke-width:1.5;fill:none}
+
+/* Fórmulas */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:1rem}
+.fcard .fname{font-size:.8rem;color:var(--muted);margin:0;display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+.fcard .fname .tag{font-size:.8rem}
+.fcard .formula{font-family:var(--f-mono);font-weight:600;font-size:1.25rem;margin:.1rem 0 1rem;overflow-wrap:anywhere}
+.fcard .controls{gap:.7rem}
+.fcard .res{margin:1rem 0 0;padding-top:.8rem;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:.95rem;overflow-wrap:anywhere}
+
+/* Preguntas de cierre */
+.quiz{margin-top:1.5rem}
+.quiz h3{color:var(--cyan);margin-bottom:.25rem}
+.quiz .sub{margin:0 0 1rem;color:var(--muted);font-size:.9rem}
+.qitem+.qitem{margin-top:1.1rem;padding-top:1.1rem;border-top:1px solid var(--line)}
+.qtext{margin:0 0 .6rem}
+.qopts{display:flex;flex-direction:column;gap:.4rem}
+.qopt{width:100%;text-align:left;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:.55rem .8rem;cursor:pointer}
+.qopt:hover:not([disabled]){border-color:var(--muted)}
+.qopt[disabled]{cursor:default}
+.qopt.good{border-color:var(--ok);color:var(--fg);box-shadow:inset 3px 0 0 var(--ok)}
+.qopt.bad{border-color:var(--bad);box-shadow:inset 3px 0 0 var(--bad)}
+.qexp{margin:.6rem 0 0;font-size:.9rem;color:var(--muted)}
+.qscore{margin:1.1rem 0 0;font-family:var(--f-mono);font-size:.95rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
+
+.conclusion{margin-top:1.25rem;background:var(--accent-fill);color:var(--on-accent);border-radius:14px;padding:1.25rem 1.4rem;font-family:var(--f-display);font-weight:700;font-size:clamp(1.05rem,2.4vw,1.3rem);line-height:1.35;text-wrap:balance}
+.foot{margin-top:2.5rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .ex-grid{grid-template-columns:minmax(0,1fr)}
+  .goals{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:560px){
+  .trow{grid-template-columns:minmax(0,1fr) auto;gap:.2rem 1rem}
+  .trow .t-desc{grid-column:1 / -1;grid-row:2;font-size:.92rem}
+  .nav .brand{display:none}
+}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <nav class="nav" aria-label="Secciones">
+    <span class="brand">Matemática × Física</span>
+    <button class="navlink" type="button" data-go="teoria">Teoría</button>
+    <button class="navlink" type="button" data-go="temas">Temas</button>
+    <button class="navlink" type="button" data-go="practica">Práctica</button>
+    <button class="navlink" type="button" data-go="formulas">Fórmulas</button>
+    <button class="themebtn" id="themebtn" type="button">Modo claro</button>
+    <div class="bar" id="bar"></div>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Infografía · Trabajo grupal</p>
+      <h1>La Matemática y su relación con la Física</h1>
+      <p class="lede">La Matemática es el lenguaje con el que la Física describe y predice la naturaleza.</p>
+      <p class="meta">Integrantes: <span class="edit" id="ed-who" contenteditable="true" spellcheck="false" role="textbox" aria-label="Integrantes (toca para editar)">[NOMBRES DE LOS 5 INTEGRANTES]</span> · Curso: <span class="edit" id="ed-course" contenteditable="true" spellcheck="false" role="textbox" aria-label="Curso (toca para editar)">[CURSO]</span> · Presentación: 12-10-2026</p>
+    </div>
+    <figure class="hero-fig">
+      <svg class="sv" id="hero-svg" viewBox="0 0 360 230" role="img" aria-label="Una pelota describe una parábola, la gráfica de h(t) = 20t − 5t²"></svg>
+    </figure>
+  </header>
+
+  <div class="goals">
+    <div>
+      <h3>Al terminar esta infografía podrás</h3>
+      <ul>
+        <li>Explicar qué aporta la Matemática a la Física.</li>
+        <li>Reconocer qué tema matemático usa cada situación física.</li>
+        <li>Resolver tres ejemplos paso a paso y comprobar tus resultados.</li>
+      </ul>
+    </div>
+    <div class="route" aria-label="Ruta de ejemplos">
+      <button type="button" data-go="ex1"><span class="n">Ejemplo 1</span><span class="t">Álgebra · tiempo, distancia y rapidez</span></button>
+      <button type="button" data-go="ex2"><span class="n">Ejemplo 2</span><span class="t">Funciones · lanzamiento vertical</span></button>
+      <button type="button" data-go="ex3"><span class="n">Ejemplo 3</span><span class="t">Trigonometría · descomponer una fuerza</span></button>
+    </div>
+  </div>
+
+  <section class="sec" id="teoria">
+    <h2>1 · Teoría: ¿qué aporta la Matemática a la Física?</h2>
+    <div class="grid4">
+      <div class="card concept"><h3>Lenguaje</h3><p>Las leyes físicas se escriben como ecuaciones: F = m·a resume cómo se mueve cualquier cuerpo.</p><span class="eq">F = m·a</span><span class="where">Se usa en el Ejemplo 3</span></div>
+      <div class="card concept"><h3>Modelado</h3><p>Un fenómeno real se representa con un modelo matemático (funciones, vectores, gráficas).</p><span class="eq">h(t) = 20t − 5t²</span><span class="where">Se construye en el Ejemplo 2</span></div>
+      <div class="card concept"><h3>Predicción</h3><p>Con el modelo se calcula qué pasará antes de que ocurra: dónde cae un proyectil, cuánto tarda un auto en frenar.</p><span class="eq">h = 0 → t = 4 s</span><span class="where">Se predice en los Ejemplos 1 y 2</span></div>
+      <div class="card concept"><h3>Precisión</h3><p>Permite medir, comparar con experimentos y estimar el error de las mediciones.</p><span class="eq">√(86,6² + 50²) ≈ 100 N</span><span class="where">Se comprueba en el Ejemplo 3</span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="temas">
+    <h2>2 · Temas matemáticos que usa la Física</h2>
+    <div class="topics">
+      <div class="trow"><span class="t-name">Álgebra</span><span class="t-desc">Despejar variables en fórmulas (v = d/t → t = d/v).</span><button class="t-go" type="button" data-go="ex1">Ejemplo 1</button></div>
+      <div class="trow"><span class="t-name">Funciones y gráficas</span><span class="t-desc">Posición–tiempo, velocidad–tiempo; funciones lineales y cuadráticas.</span><button class="t-go" type="button" data-go="ex2">Ejemplo 2</button></div>
+      <div class="trow"><span class="t-name">Trigonometría y vectores</span><span class="t-desc">Descomponer fuerzas y velocidades con seno y coseno.</span><button class="t-go" type="button" data-go="ex3">Ejemplo 3</button></div>
+    </div>
+    <p class="topics-note">La Física también usa Geometría (trayectorias, áreas, óptica), Estadística (promedios y error en el laboratorio) y Cálculo (la derivada mide rapidez de cambio y la integral acumula distancia o trabajo). Aquí desarrollamos los tres temas que tienen ejemplo.</p>
+  </section>
+
+  <section class="sec" id="practica">
+    <h2>3 · Práctica: ejemplos desarrollados</h2>
+
+    <article class="card ex" id="ex1">
+      <header class="ex-h"><h3>Ejemplo 1 · Tiempo, distancia y rapidez (álgebra)</h3><p class="tag">Tema matemático: despejar variables</p></header>
+      <p><b>Problema:</b> <span id="u-prob"></span></p>
+      <div class="ex-grid">
+        <div>
+          <div class="controls">
+            <div class="ctl"><span class="lbl">¿Qué quieres hallar?</span>
+              <div class="seg" role="group" aria-label="Incógnita">
+                <button class="btn" type="button" data-u="t" aria-pressed="true">Tiempo t</button>
+                <button class="btn" type="button" data-u="d" aria-pressed="false">Distancia d</button>
+                <button class="btn" type="button" data-u="v" aria-pressed="false">Rapidez v</button>
+              </div>
+            </div>
+            <div class="ctl" id="u-ctl-d"><label class="lbl" for="u-d"><span>Distancia d</span><output id="u-d-o"></output></label><input id="u-d" type="range" min="10" max="1000" step="10" value="100" data-unit="m"></div>
+            <div class="ctl" id="u-ctl-v"><label class="lbl" for="u-v"><span>Rapidez v</span><output id="u-v-o"></output></label><input id="u-v" type="range" min="1" max="50" step="1" value="5" data-unit="m/s"></div>
+            <div class="ctl" id="u-ctl-t" hidden><label class="lbl" for="u-t"><span>Tiempo t</span><output id="u-t-o"></output></label><input id="u-t" type="range" min="1" max="200" step="1" value="20" data-unit="s"></div>
+          </div>
+          <div class="sol" id="u-sol"></div>
+        </div>
+        <div>
+          <div class="fig"><svg class="sv" id="u-svg" viewBox="0 0 520 100" role="img" aria-label="Un auto avanza por una pista a rapidez constante"></svg></div>
+          <div class="playrow">
+            <button class="btn primary" type="button" id="u-play">Correr</button>
+            <div class="ctl"><label class="lbl" for="u-p"><span>Tiempo</span><output id="u-p-o"></output></label><input id="u-p" type="range" min="0" max="100" step="0.1" value="40" data-unit="%"></div>
+          </div>
+          <p class="now" id="u-now"></p>
+        </div>
+      </div>
+    </article>
+
+    <article class="card ex" id="ex2">
+      <header class="ex-h"><h3>Ejemplo 2 · Lanzamiento vertical (función cuadrática)</h3><p class="tag">Tema matemático: función cuadrática</p></header>
+      <p><b>Problema:</b> una pelota se lanza hacia arriba con v₀ = <span class="hl" id="l-pv"></span> m/s (g ≈ <span class="hl" id="l-pg"></span> m/s²). ¿Qué altura máxima alcanza y cuánto tiempo está en el aire?</p>
+      <div class="ex-grid">
+        <div>
+          <div class="controls">
+            <div class="ctl"><label class="lbl" for="l-v"><span>Velocidad inicial v₀</span><output id="l-v-o"></output></label><input id="l-v" type="range" min="5" max="40" step="1" value="20" data-unit="m/s"></div>
+            <div class="ctl"><label class="lbl" for="l-g"><span>Gravedad g</span><output id="l-g-o"></output></label><input id="l-g" type="range" min="1" max="25" step="0.1" value="10" data-dec="1" data-unit="m/s²">
+              <div class="chips" style="margin-top:.35rem">
+                <button class="btn" type="button" data-g="1.6">Luna 1,6</button>
+                <button class="btn" type="button" data-g="3.7">Marte 3,7</button>
+                <button class="btn" type="button" data-g="10">Tierra 10</button>
+                <button class="btn" type="button" data-g="24.8">Júpiter 24,8</button>
+              </div>
+            </div>
+            <div class="btnrow"><button class="btn" type="button" id="l-reset">Valores del ejemplo</button></div>
+          </div>
+          <div class="sol" id="l-sol"></div>
+        </div>
+        <div>
+          <div class="fig"><svg class="sv" id="l-svg" viewBox="0 0 520 250" role="img" aria-label="Pelota subiendo y bajando junto a la gráfica de altura contra tiempo"></svg></div>
+          <div class="playrow">
+            <button class="btn primary" type="button" id="l-play">Lanzar</button>
+            <div class="ctl"><label class="lbl" for="l-p"><span>Tiempo</span><output id="l-p-o"></output></label><input id="l-p" type="range" min="0" max="100" step="0.1" value="50" data-unit="%"></div>
+          </div>
+          <p class="now" id="l-now"></p>
+        </div>
+      </div>
+    </article>
+
+    <article class="card ex" id="ex3">
+      <header class="ex-h"><h3>Ejemplo 3 · Descomposición de una fuerza (trigonometría)</h3><p class="tag">Tema matemático: seno y coseno (y álgebra para despejar a)</p></header>
+      <p><b>Problema:</b> se jala una caja con una fuerza de <span class="hl" id="f-pf"></span> N que forma <span class="hl" id="f-pa"></span>° con el suelo. ¿Cuánta fuerza empuja horizontalmente y cuánta actúa hacia arriba? Si la caja tiene masa m = <span class="hl" id="f-pm"></span> kg y no hay rozamiento, ¿qué aceleración le da la parte horizontal?</p>
+      <div class="ex-grid">
+        <div>
+          <div class="controls">
+            <div class="ctl"><label class="lbl" for="f-f"><span>Fuerza F</span><output id="f-f-o"></output></label><input id="f-f" type="range" min="10" max="200" step="5" value="100" data-unit="N"></div>
+            <div class="ctl"><label class="lbl" for="f-a"><span>Ángulo con el suelo</span><output id="f-a-o"></output></label><input id="f-a" type="range" min="0" max="90" step="1" value="30" data-unit="°"></div>
+            <div class="ctl"><label class="lbl" for="f-m"><span>Masa de la caja m</span><output id="f-m-o"></output></label><input id="f-m" type="range" min="1" max="50" step="1" value="10" data-unit="kg"></div>
+            <div class="btnrow"><button class="btn" type="button" id="f-reset">Valores del ejemplo</button></div>
+          </div>
+          <div class="sol" id="f-sol"></div>
+        </div>
+        <div>
+          <div class="fig"><svg class="sv" id="f-svg" viewBox="0 0 360 240" role="img" aria-label="Fuerza inclinada descompuesta en componente horizontal y vertical"></svg></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="sec" id="formulas">
+    <h2>4 · Fórmulas clave y conclusión</h2>
+    <div class="fgrid">
+      <div class="card fcard">
+        <p class="fname"><span>Movimiento uniforme</span><span class="tag">Ejemplo 1</span></p>
+        <p class="formula">v = d / t</p>
+        <div class="controls">
+          <div class="ctl"><label class="lbl" for="c1-d"><span>Distancia d</span><output id="c1-d-o"></output></label><input id="c1-d" type="range" min="10" max="1000" step="10" value="100" data-unit="m"></div>
+          <div class="ctl"><label class="lbl" for="c1-t"><span>Tiempo t</span><output id="c1-t-o"></output></label><input id="c1-t" type="range" min="1" max="100" step="1" value="20" data-unit="s"></div>
+        </div>
+        <p class="res" id="c1-res"></p>
+      </div>
+      <div class="card fcard">
+        <p class="fname"><span>Lanzamiento vertical</span><span class="tag">Ejemplo 2</span></p>
+        <p class="formula">h = v₀t − ½gt²</p>
+        <div class="controls">
+          <div class="ctl"><label class="lbl" for="c2-v"><span>Velocidad inicial v₀</span><output id="c2-v-o"></output></label><input id="c2-v" type="range" min="5" max="40" step="1" value="20" data-unit="m/s"></div>
+          <div class="ctl"><label class="lbl" for="c2-t"><span>Tiempo t (g = 10 m/s²)</span><output id="c2-t-o"></output></label><input id="c2-t" type="range" min="0" max="8" step="0.1" value="1" data-dec="1" data-unit="s"></div>
+        </div>
+        <p class="res" id="c2-res"></p>
+      </div>
+      <div class="card fcard">
+        <p class="fname"><span>Componentes de una fuerza</span><span class="tag">Ejemplo 3</span></p>
+        <p class="formula">Fx = F·cos θ<br>Fy = F·sen θ</p>
+        <div class="controls">
+          <div class="ctl"><label class="lbl" for="c3-f"><span>Fuerza F</span><output id="c3-f-o"></output></label><input id="c3-f" type="range" min="10" max="200" step="5" value="100" data-unit="N"></div>
+          <div class="ctl"><label class="lbl" for="c3-a"><span>Ángulo θ</span><output id="c3-a-o"></output></label><input id="c3-a" type="range" min="0" max="90" step="1" value="30" data-unit="°"></div>
+        </div>
+        <p class="res" id="c3-res"></p>
+      </div>
+      <div class="card fcard">
+        <p class="fname"><span>Segunda ley de Newton</span><span class="tag">Ejemplo 3</span></p>
+        <p class="formula">F = m·a<br>a = F / m</p>
+        <div class="controls">
+          <div class="ctl"><label class="lbl" for="c4-f"><span>Fuerza F</span><output id="c4-f-o"></output></label><input id="c4-f" type="range" min="1" max="200" step="1" value="87" data-unit="N"></div>
+          <div class="ctl"><label class="lbl" for="c4-m"><span>Masa m</span><output id="c4-m-o"></output></label><input id="c4-m" type="range" min="1" max="50" step="1" value="10" data-unit="kg"></div>
+        </div>
+        <p class="res" id="c4-res"></p>
+      </div>
+    </div>
+
+    <div class="card quiz">
+      <h3>Comprueba lo aprendido</h3>
+      <p class="sub">Una pregunta por cada ejemplo.</p>
+      <div id="quiz"></div>
+      <div class="qscore"><span id="qscore" aria-live="polite"></span><button class="btn" type="button" id="qreset">Reintentar</button></div>
+    </div>
+
+    <div class="conclusion">La Matemática es el lenguaje de la Física: convierte observaciones en leyes, y las leyes en predicciones útiles para la ingeniería, la tecnología y la vida diaria.</div>
+    <p class="foot">Trabajo grupal · La Matemática y su relación con la Física · Exposición: 12 de octubre de 2026 (10 minutos)</p>
+  </section>
+</div>
+
+<script>
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s){ return document.querySelector(s); };
+  var fmt = function(n, d){ if(!isFinite(n)) return '–'; return Number(n).toLocaleString('es', {maximumFractionDigits: d == null ? 1 : d}); };
+  var f2 = function(n){ return fmt(n, 2); };
+  var store = {
+    get: function(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+    set: function(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+  };
+
+  /* ---------- Enlazar sliders ---------- */
+  function bind(ids, fn){
+    var els = ids.map(function(id){ return document.getElementById(id); });
+    function run(){
+      els.forEach(function(e){
+        var o = document.getElementById(e.id + '-o');
+        if(o) o.textContent = fmt(+e.value, +(e.dataset.dec || 0)) + (e.dataset.unit ? ' ' + e.dataset.unit : '');
+      });
+      fn.apply(null, els.map(function(e){ return +e.value; }));
+    }
+    els.forEach(function(e){ e.addEventListener('input', run); });
+    run();
+    return { run: run, set: function(vals){ els.forEach(function(e, i){ e.value = vals[i]; }); run(); } };
+  }
+
+  /* ---------- Reproductor de tiempo ---------- */
+  function makePlayer(btn, slider, run, label, durFn){
+    var raf = 0, playing = false;
+    function stop(){ playing = false; cancelAnimationFrame(raf); btn.textContent = label; }
+    btn.addEventListener('click', function(){
+      if(playing){ stop(); return; }
+      if(+slider.value >= 99.9) slider.value = 0;
+      var dur = durFn(), start = performance.now(), p0 = +slider.value;
+      playing = true; btn.textContent = 'Pausa';
+      function step(now){
+        var p = Math.min(100, p0 + (now - start) / dur * 100);
+        slider.value = p; run();
+        if(p < 100 && playing) raf = requestAnimationFrame(step); else stop();
+      }
+      raf = requestAnimationFrame(step);
+    });
+    slider.addEventListener('pointerdown', stop);
+    return stop;
+  }
+
+  /* ---------- Tema claro / oscuro ---------- */
+  var root = document.documentElement, tbtn = $('#themebtn');
+  function isDark(){
+    var a = root.getAttribute('data-theme');
+    if(a) return a === 'dark';
+    return !(window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches);
+  }
+  function syncTheme(){ tbtn.textContent = isDark() ? 'Modo claro' : 'Modo oscuro'; }
+  var savedTheme = store.get('infografia-tema');
+  if(savedTheme === 'light' || savedTheme === 'dark') root.setAttribute('data-theme', savedTheme);
+  syncTheme();
+  tbtn.addEventListener('click', function(){
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next); store.set('infografia-tema', next); syncTheme();
+  });
+
+  /* ---------- Navegación ---------- */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('[data-go]') : null;
+    if(!b) return;
+    var el = document.getElementById(b.dataset.go);
+    if(el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  });
+  var bar = $('#bar');
+  function onScroll(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
+    bar.style.transform = 'scaleX(' + p + ')';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- Datos editables ---------- */
+  [['ed-who', 'infografia-integrantes'], ['ed-course', 'infografia-curso']].forEach(function(pair){
+    var el = document.getElementById(pair[0]), v = store.get(pair[1]);
+    if(v) el.textContent = v;
+    el.addEventListener('input', function(){ store.set(pair[1], el.textContent); });
+    el.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); el.blur(); } });
+  });
+
+  /* ---------- Portada: parábola con pelota ---------- */
+  (function(){
+    var svg = $('#hero-svg');
+    var x0 = 30, x1 = 330, y0 = 188, ytop = 44;
+    var X = function(t){ return x0 + t / 4 * (x1 - x0); };
+    var Y = function(h){ return y0 - h / 20 * (y0 - ytop); };
+    var d = '';
+    for(var i = 0; i <= 50; i++){ var t = 4 * i / 50; d += (i ? 'L' : 'M') + X(t).toFixed(1) + ' ' + Y(20 * t - 5 * t * t).toFixed(1); }
+    svg.innerHTML =
+      '<line class="grid" x1="30" y1="' + Y(10) + '" x2="330" y2="' + Y(10) + '"/>' +
+      '<line class="ax" x1="30" y1="' + y0 + '" x2="338" y2="' + y0 + '"/>' +
+      '<line class="ax" x1="30" y1="' + y0 + '" x2="30" y2="26"/>' +
+      '<line class="dash" x1="' + X(2) + '" y1="' + Y(20) + '" x2="' + X(2) + '" y2="' + y0 + '"/>' +
+      '<path class="curve" d="' + d + '"/>' +
+      '<text x="' + X(2) + '" y="' + (Y(20) - 10) + '" text-anchor="middle" class="cy">20 m</text>' +
+      '<text x="30" y="18">h (m)</text>' +
+      '<text x="' + X(2) + '" y="' + (y0 + 17) + '" text-anchor="middle">2 s</text>' +
+      '<text x="330" y="' + (y0 + 17) + '" text-anchor="end">4 s</text>' +
+      '<text x="30" y="218" class="ac">h(t) = 20t − 5t²</text>' +
+      '<circle id="hero-ball" class="pt" r="8" cx="' + X(2) + '" cy="' + Y(20) + '"/>';
+    if(reduce) return;
+    var ball = $('#hero-ball'), period = 4200;
+    function frame(now){
+      var u = (now % period) / period, t = u * 4;
+      ball.setAttribute('cx', X(t).toFixed(1));
+      ball.setAttribute('cy', Y(Math.max(0, 20 * t - 5 * t * t)).toFixed(1));
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+
+  /* ---------- Ejemplo 1: movimiento uniforme (álgebra) ---------- */
+  var uMode = 't';
+  var u = bind(['u-d', 'u-v', 'u-t', 'u-p'], function(d, v, t, p){
+    var D, V, T;
+    if(uMode === 't'){ D = d; V = v; T = d / v; }
+    else if(uMode === 'd'){ V = v; T = t; D = v * t; }
+    else { D = d; T = t; V = d / t; }
+    var prob, base = 'v = d / t', desp, sust;
+    if(uMode === 't'){
+      prob = 'un auto recorre d = <span class="hl">' + fmt(D, 0) + ' m</span> con rapidez constante v = <span class="hl">' + fmt(V, 0) + ' m/s</span>. ¿Cuánto tarda?';
+      desp = 't = d / v';
+      sust = 't = ' + fmt(D, 0) + ' m ÷ ' + fmt(V, 0) + ' m/s = <span class="hl">' + f2(T) + ' s</span>';
+    } else if(uMode === 'd'){
+      prob = 'un auto avanza con rapidez constante v = <span class="hl">' + fmt(V, 0) + ' m/s</span> durante t = <span class="hl">' + fmt(T, 0) + ' s</span>. ¿Qué distancia recorre?';
+      desp = 'd = v · t';
+      sust = 'd = ' + fmt(V, 0) + ' m/s · ' + fmt(T, 0) + ' s = <span class="hl">' + f2(D) + ' m</span>';
+    } else {
+      prob = 'un auto recorre d = <span class="hl">' + fmt(D, 0) + ' m</span> en t = <span class="hl">' + fmt(T, 0) + ' s</span> con rapidez constante. ¿Cuál es su rapidez?';
+      desp = 'v = d / t';
+      sust = 'v = ' + fmt(D, 0) + ' m ÷ ' + fmt(T, 0) + ' s = <span class="hl">' + f2(V) + ' m/s</span>';
+    }
+    $('#u-prob').innerHTML = prob;
+    $('#u-sol').innerHTML =
+      '<p><b>Fórmula base</b> (movimiento uniforme): ' + base + '</p>' +
+      '<p><b>Despeje:</b> ' + desp + '</p>' +
+      '<p><b>Sustitución:</b> ' + sust + '</p>';
+    var q = p / 100, X = function(k){ return 30 + k * 460; }, ticks = '';
+    for(var i = 0; i <= 5; i++){ ticks += '<line class="ax" x1="' + X(i / 5) + '" y1="62" x2="' + X(i / 5) + '" y2="74"/>'; }
+    $('#u-svg').innerHTML =
+      '<line class="ax" x1="30" y1="68" x2="490" y2="68"/>' + ticks +
+      '<line class="vec-a" x1="30" y1="68" x2="' + X(q) + '" y2="68"/>' +
+      '<text x="30" y="92" text-anchor="middle">0</text>' +
+      '<text x="490" y="92" text-anchor="middle">' + fmt(D, 0) + ' m</text>' +
+      '<text class="cy" x="' + X(q) + '" y="30" text-anchor="middle">t = ' + fmt(T * q, 1) + ' s</text>' +
+      '<circle class="pt" r="9" cx="' + X(q) + '" cy="50"/>' +
+      '<line class="dash" x1="' + X(q) + '" y1="59" x2="' + X(q) + '" y2="68"/>';
+    $('#u-now').innerHTML = 't = <b>' + f2(T * q) + ' s</b> · recorrido = <b>' + f2(D * q) + ' m</b> · la rapidez es siempre <b>' + f2(V) + ' m/s</b>';
+  });
+  function applyUMode(){
+    ['d', 'v', 't'].forEach(function(k){ $('#u-ctl-' + k).hidden = (k === uMode); });
+    document.querySelectorAll('[data-u]').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.u === uMode ? 'true' : 'false'); });
+    u.run();
+  }
+  document.querySelectorAll('[data-u]').forEach(function(b){
+    b.addEventListener('click', function(){ uMode = b.dataset.u; applyUMode(); });
+  });
+  applyUMode();
+  makePlayer($('#u-play'), $('#u-p'), function(){ u.run(); }, 'Correr', function(){ return 3500; });
+
+  /* ---------- Ejemplo 2: lanzamiento vertical ---------- */
+  var l = bind(['l-v', 'l-g', 'l-p'], function(v0, g, p){
+    var T = 2 * v0 / g, tm = v0 / g, hm = v0 * v0 / (2 * g);
+    var t = T * p / 100, h = Math.max(0, v0 * t - 0.5 * g * t * t), v = v0 - g * t;
+    var y0 = 212, yt = 30, L = 96, R = 504, hs = hm * 1.18;
+    var X = function(tt){ return L + tt / T * (R - L); };
+    var Y = function(hh){ return y0 - hh / hs * (y0 - yt); };
+    var d = '';
+    for(var i = 0; i <= 60; i++){ var tt = T * i / 60, hh = Math.max(0, v0 * tt - 0.5 * g * tt * tt); d += (i ? 'L' : 'M') + X(tt).toFixed(1) + ' ' + Y(hh).toFixed(1); }
+    var xp = X(t), yp = Y(h);
+    $('#l-svg').innerHTML =
+      '<line class="ax" x1="8" y1="' + y0 + '" x2="64" y2="' + y0 + '"/>' +
+      '<line class="grid" x1="36" y1="' + y0 + '" x2="36" y2="' + yt + '"/>' +
+      '<line class="ax" x1="' + L + '" y1="' + y0 + '" x2="' + (R + 8) + '" y2="' + y0 + '"/>' +
+      '<line class="ax" x1="' + L + '" y1="' + y0 + '" x2="' + L + '" y2="22"/>' +
+      '<line class="dash" x1="' + L + '" y1="' + Y(hm) + '" x2="' + X(tm) + '" y2="' + Y(hm) + '"/>' +
+      '<line class="dash" x1="' + X(tm) + '" y1="' + Y(hm) + '" x2="' + X(tm) + '" y2="' + y0 + '"/>' +
+      '<line class="dash" x1="45" y1="' + yp + '" x2="' + xp + '" y2="' + yp + '"/>' +
+      '<path class="curve" d="' + d + '"/>' +
+      '<circle class="pt-a" r="5" cx="' + X(tm) + '" cy="' + Y(hm) + '"/>' +
+      '<text class="ac" x="' + X(tm) + '" y="' + (Y(hm) - 11) + '" text-anchor="middle">' + fmt(hm, 1) + ' m (t = ' + fmt(tm, 1) + ' s)</text>' +
+      '<text x="' + (L - 6) + '" y="' + (Y(hm) + 4) + '" text-anchor="end">' + fmt(hm, 1) + '</text>' +
+      '<text x="' + (L - 6) + '" y="' + (y0 + 4) + '" text-anchor="end">0</text>' +
+      '<text x="' + L + '" y="' + (y0 + 17) + '" text-anchor="middle">0</text>' +
+      '<text x="' + X(tm) + '" y="' + (y0 + 17) + '" text-anchor="middle">' + fmt(tm, 1) + ' s</text>' +
+      '<text x="' + R + '" y="' + (y0 + 17) + '" text-anchor="middle">' + fmt(T, 1) + ' s</text>' +
+      '<text x="' + (L + 6) + '" y="16">h (m)</text>' +
+      '<text x="' + R + '" y="' + (y0 + 34) + '" text-anchor="end">t (s)</text>' +
+      '<circle class="pt" r="9" cx="36" cy="' + yp + '"/>' +
+      '<circle class="pt" r="6" cx="' + xp + '" cy="' + yp + '"/>';
+    $('#l-pv').textContent = fmt(v0, 0);
+    $('#l-pg').textContent = fmt(g, 1);
+    $('#l-sol').innerHTML =
+      '<p><b>Fórmula general:</b> h = v₀t − ½gt², con v₀ = ' + fmt(v0, 0) + ' m/s y g = ' + fmt(g, 1) + ' m/s²</p>' +
+      '<p><b>Modelo:</b> h(t) = ' + fmt(v0, 0) + 't − ' + f2(g / 2) + 't², una función cuadrática con a = −' + f2(g / 2) + ' y b = ' + fmt(v0, 0) + '</p>' +
+      '<p><b>Altura máxima</b> (vértice): t = −b/2a = −' + fmt(v0, 0) + '/(−' + f2(g) + ') = ' + f2(tm) + ' s → h(' + f2(tm) + ') = ' + f2(v0 * tm) + ' − ' + f2(g / 2 * tm * tm) + ' = <span class="hl">' + f2(hm) + ' m</span></p>' +
+      '<p><b>Tiempo en el aire</b> (h = 0): ' + fmt(v0, 0) + 't − ' + f2(g / 2) + 't² = ' + f2(g / 2) + 't(' + f2(T) + ' − t) = 0 → t = <span class="hl">' + f2(T) + ' s</span></p>';
+    $('#l-now').innerHTML = 't = <b>' + f2(t) + ' s</b> · h = <b>' + f2(h) + ' m</b> · v = <b>' + f2(v) + ' m/s</b> ' + (v > 0.005 ? '(sube)' : v < -0.005 ? '(baja)' : '(en el punto más alto)');  });
+  var stopL = makePlayer($('#l-play'), $('#l-p'), function(){ l.run(); }, 'Lanzar', function(){
+    var T = 2 * (+$('#l-v').value) / (+$('#l-g').value);
+    return Math.min(Math.max(T, 1.5), 5) * 1000;
+  });
+  document.querySelectorAll('[data-g]').forEach(function(b){
+    b.addEventListener('click', function(){ $('#l-g').value = b.dataset.g; l.run(); });
+  });
+  $('#l-reset').addEventListener('click', function(){ stopL(); l.set([20, 10, 50]); });
+
+  /* ---------- Ejemplo 3: descomposición de una fuerza ---------- */
+  var f = bind(['f-f', 'f-a', 'f-m'], function(F, a, m){
+    var r = a * Math.PI / 180, c = Math.cos(r), s = Math.sin(r), Fx = F * c, Fy = F * s;
+    var ox = 40, oy = 190, len = F / 200 * 170;
+    var tx = ox + len * c, ty = oy - len * s;
+    var arc = '';
+    if(a >= 3){
+      var ar = 38;
+      arc = '<path class="arc" d="M ' + (ox + ar) + ' ' + oy + ' A ' + ar + ' ' + ar + ' 0 0 0 ' + (ox + ar * c).toFixed(1) + ' ' + (oy - ar * s).toFixed(1) + '"/>' +
+        '<text x="' + (ox + 56 * Math.cos(r / 2)).toFixed(1) + '" y="' + (oy - 56 * Math.sin(r / 2) + 4).toFixed(1) + '">' + fmt(a, 0) + '°</text>';
+    }
+    $('#f-svg').innerHTML =
+      '<defs>' +
+      '<marker id="f-ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="mk-a" d="M0 0L10 5L0 10z"/></marker>' +
+      '<marker id="f-mc" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="mk-c" d="M0 0L10 5L0 10z"/></marker>' +
+      '</defs>' +
+      '<line class="grid" x1="10" y1="' + oy + '" x2="350" y2="' + oy + '"/>' +
+      (Fy > 1 ? '<line class="dash" x1="' + tx.toFixed(1) + '" y1="' + ty.toFixed(1) + '" x2="' + tx.toFixed(1) + '" y2="' + oy + '"/>' : '') +
+      '<line class="vec-c" x1="' + ox + '" y1="' + oy + '" x2="' + (tx - (Fx > 12 ? 2 : 0)).toFixed(1) + '" y2="' + oy + '" marker-end="url(#f-mc)"/>' +
+      (Fy > 12 ? '<line class="vec-c" x1="' + tx.toFixed(1) + '" y1="' + oy + '" x2="' + tx.toFixed(1) + '" y2="' + (ty + 4).toFixed(1) + '" marker-end="url(#f-mc)"/>' : '') +
+      '<line class="vec-a" x1="' + ox + '" y1="' + oy + '" x2="' + (tx - 3 * c).toFixed(1) + '" y2="' + (ty + 3 * s).toFixed(1) + '" marker-end="url(#f-ma)"/>' +
+      arc +
+      '<text class="ac" text-anchor="end" x="' + ((ox + tx) / 2 - 8).toFixed(1) + '" y="' + ((oy + ty) / 2 - 6).toFixed(1) + '">F = ' + fmt(F, 0) + ' N</text>' +
+      '<text class="cy" text-anchor="middle" x="' + ((ox + tx) / 2).toFixed(1) + '" y="' + (oy + 20) + '">Fx = ' + fmt(Fx, 1) + ' N</text>' +
+      (Fy > 8 ? '<text class="cy" x="' + (tx + 8).toFixed(1) + '" y="' + ((oy + ty) / 2 + 4).toFixed(1) + '">Fy = ' + fmt(Fy, 1) + ' N</text>' : '') +
+      '<circle class="pt-a" r="5" cx="' + ox + '" cy="' + oy + '"/>';
+    $('#f-pf').textContent = fmt(F, 0);
+    $('#f-pa').textContent = fmt(a, 0);
+    $('#f-pm').textContent = fmt(m, 0);
+    var Fxr = Math.round(Fx * 10) / 10, Fyr = Math.round(Fy * 10) / 10;
+    var hyp = Math.hypot(Fxr, Fyr), diff = Math.abs(hyp - F);
+    $('#f-sol').innerHTML =
+      '<p><b>Horizontal:</b> Fx = ' + fmt(F, 0) + '·cos ' + fmt(a, 0) + '° = ' + fmt(F, 0) + '·' + fmt(c, 3) + ' = <span class="hl">' + fmt(Fx, 1) + ' N</span></p>' +
+      '<p><b>Vertical:</b> Fy = ' + fmt(F, 0) + '·sen ' + fmt(a, 0) + '° = ' + fmt(F, 0) + '·' + fmt(s, 3) + ' = <span class="hl">' + fmt(Fy, 1) + ' N</span></p>' +
+      '<p><b>Comprobación:</b> √(' + fmt(Fxr, 1) + '² + ' + fmt(Fyr, 1) + '²) ≈ ' + fmt(hyp, 2) + ' N <span class="ok">✓</span> (Pitágoras)' + (diff > 0.005 ? ' · diferencia por redondeo: ' + fmt(diff, 2) + ' N' : '') + '</p>' +
+      '<p><b>Aceleración</b> (F = m·a → a = F/m): a = ' + fmt(Fx, 1) + ' / ' + fmt(m, 0) + ' = <span class="hl">' + f2(Fx / m) + ' m/s²</span></p>';
+  });
+  $('#f-reset').addEventListener('click', function(){ f.set([100, 30, 10]); });
+
+  /* ---------- Calculadoras de fórmulas ---------- */
+  bind(['c1-d', 'c1-t'], function(d, t){
+    $('#c1-res').innerHTML = 'v = ' + fmt(d, 0) + ' / ' + fmt(t, 0) + ' = <span class="hl">' + fmt(d / t, 2) + ' m/s</span>';
+  });
+  bind(['c2-v', 'c2-t'], function(v0, t){
+    var g = 10, h = v0 * t - 0.5 * g * t * t, T = 2 * v0 / g;
+    $('#c2-res').innerHTML = h < 0
+      ? 'La pelota ya tocó el suelo (cae en t = ' + fmt(T, 1) + ' s).'
+      : 'h = ' + fmt(v0, 0) + '·' + fmt(t, 1) + ' − 5·' + fmt(t, 1) + '² = <span class="hl">' + fmt(h, 2) + ' m</span>';
+  });
+  bind(['c3-f', 'c3-a'], function(F, a){
+    var r = a * Math.PI / 180;
+    $('#c3-res').innerHTML = 'Fx = <span class="hl">' + fmt(F * Math.cos(r), 1) + ' N</span><br>Fy = <span class="hl">' + fmt(F * Math.sin(r), 1) + ' N</span>';
+  });
+  bind(['c4-f', 'c4-m'], function(F, m){
+    $('#c4-res').innerHTML = 'a = ' + fmt(F, 0) + ' / ' + fmt(m, 0) + ' = <span class="hl">' + fmt(F / m, 2) + ' m/s²</span>';
+  });
+
+  /* ---------- Preguntas de cierre ---------- */
+  var quiz = [
+    { q: 'Un auto recorre 100 m con rapidez constante de 5 m/s. ¿Qué despeje usas para hallar el tiempo?',
+      o: ['t = d · v', 't = d / v', 't = v / d'], c: 1,
+      e: 'De v = d/t, la t pasa multiplicando y la v dividiendo: t = d/v = 100/5 = 20 s.' },
+    { q: 'En h(t) = 20t − 5t², ¿en qué instante alcanza la pelota su altura máxima?',
+      o: ['1 s', '2 s', '4 s'], c: 1,
+      e: 'El vértice está en t = −b/2a = 2 s. A los 4 s la pelota vuelve al suelo.' },
+    { q: 'Una fuerza de 100 N forma 30° con el suelo. ¿Cuánto vale su componente horizontal?',
+      o: ['50 N', '86,6 N', '100 N'], c: 1,
+      e: 'Fx = 100·cos 30° = 86,6 N. Los 50 N son la componente vertical.' }
+  ];
+  var qroot = $('#quiz'), score = 0, answered = 0;
+  function scoreText(){
+    var el = $('#qscore');
+    if(answered === 0){ el.textContent = 'Elige una respuesta en cada pregunta.'; return; }
+    el.textContent = 'Aciertos: ' + score + ' de ' + quiz.length + (answered === quiz.length ? (score === quiz.length ? ' · Dominas los tres ejemplos.' : ' · Repasa los ejemplos donde fallaste.') : '');
+  }
+  function renderQuiz(){
+    score = 0; answered = 0;
+    qroot.innerHTML = quiz.map(function(it, i){
+      return '<div class="qitem"><p class="qtext"><b>' + (i + 1) + '.</b> ' + it.q + ' <span class="tag">Ejemplo ' + (i + 1) + '</span></p>' +
+        '<div class="qopts" data-q="' + i + '">' +
+        it.o.map(function(t, j){ return '<button type="button" class="qopt" data-q="' + i + '" data-j="' + j + '">' + t + '</button>'; }).join('') +
+        '</div><p class="qexp" hidden></p></div>';
+    }).join('');
+    scoreText();
+  }
+  qroot.addEventListener('click', function(e){
+    var b = e.target.closest ? e.target.closest('.qopt') : null;
+    if(!b || b.disabled) return;
+    var i = +b.dataset.q, j = +b.dataset.j, it = quiz[i];
+    var group = qroot.querySelectorAll('.qopt[data-q="' + i + '"]');
+    group.forEach(function(x){
+      x.disabled = true;
+      if(+x.dataset.j === it.c){ x.classList.add('good'); x.textContent = x.textContent + '  ✓'; }
+    });
+    if(j === it.c) score++; else { b.classList.add('bad'); b.textContent = b.textContent + '  ✗'; }
+    answered++;
+    var exp = b.parentNode.nextSibling;
+    exp.textContent = it.e; exp.hidden = false;
+    scoreText();
+  });
+  $('#qreset').addEventListener('click', renderQuiz);
+  renderQuiz();
+})();
+</script>
+</body>
+</html>
